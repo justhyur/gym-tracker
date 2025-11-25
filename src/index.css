@@ -13,6 +13,12 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+*{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 .page-container {
   padding: 1rem;
 }
@@ -20,6 +26,17 @@
 h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
   margin-bottom: 0.5rem;
+  padding: .5rem 0;
+}
+
+h1 input{
+  font-size: inherit;
+  font-weight: inherit;
+  font-family: inherit;
+  background: transparent;
+  border: none;
+  color: inherit;
+  width: 100%;
 }
 
 .routines-list{
@@ -45,4 +62,42 @@ header{
   display: flex;
   justify-content: center;
   gap: .5rem;
+}
+
+.exercise-list{
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  margin-top: 1rem;
+}
+
+.exercise-card{
+  font-size: .75em;
+  border-radius: 4px;
+  padding: .5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: #1e1e1e;
+}
+
+.exercise-card p{
+  margin-bottom: .25rem;
+}
+
+.exercise-card-header{
+  display: flex;
+  gap: .5rem;
+  align-items: center;
+  justify-content: space-between
+}
+
+.exercise-card-config{
+  margin-top: .5rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.exercise-card-controls{
+  display: flex;
+  gap: .5rem;
+  align-items: center;
 }
