@@ -68,7 +68,8 @@ header{
   display: flex;
   flex-direction: column;
   gap: .5rem;
-  margin-top: 1rem;
+  padding: .5rem;
+  margin-top: .5rem;
 }
 
 .exercise-card{
@@ -100,4 +101,50 @@ header{
   display: flex;
   gap: .5rem;
   align-items: center;
+}
+
+.exercise-sets{
+  margin-top: .5rem;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+
+.sets{
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: .25rem;
+}
+
+.set, .sets-header{
+  display: flex;
+  gap: .5rem;
+  align-items: center;
+}
+
+.sets-header > *{
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.sets-footer{
+  display: flex;
+  justify-content: center;
+}
+
+.set-type{
+  width: 35px;
+}
+
+.set-unitValue{
+  width: 60px;
+}
+
+.set-unitValue input{
+  width: 100%;
+}
+
+.set-repsValue, .set-timeValue{
+  width: 80px;
 }

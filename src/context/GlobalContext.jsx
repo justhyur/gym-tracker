@@ -2,6 +2,13 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 const GlobalContext = createContext();
 
+const defaultSet = {
+    type: 'n',
+    unitValue: null,
+    timeValue: null,
+    repsValue: null
+}
+
 export function GlobalContextProvider({children}){
 
     // -- Logiche per gestire le mie Routine --
@@ -68,7 +75,7 @@ export function GlobalContextProvider({children}){
             restTime: null,
             unitType: 'Kg',
             type: 'reps',
-            sets: []
+            sets: [defaultSet]
         };
         setExercises(es => [...es, newExercise]);
         return newExercise;
@@ -83,13 +90,57 @@ export function GlobalContextProvider({children}){
 
     const deleteExercise = id => {
         setExercises(es => es.filter(e => e.id !== Number(id)));
+        setRoutines(rs => rs.map(r => ({
+            ...r,
+            exerciseIds: r.exerciseIds.filter(eId => eId !== Number(id))
+        })));
+    }
+
+    const createSetForExercise = (exerciseId) => {
+        setExercises(es => es.map(e => {
+            if(e.id !== Number(exerciseId)) return e;
+            return {
+                ...e,
+                sets: [
+                    ...e.sets,
+                    defaultSet
+                ]
+            }
+        }));
+    }
+
+    const editSetForExercise = (exerciseId, setIndex, changes) => {
+        setExercises(es => es.map(e => {
+            if(e.id !== Number(exerciseId)) return e;
+            return {
+                ...e,
+                sets: e.sets.map((s, si) => {
+                    if(si !== Number(setIndex)) return s;
+                    return {
+                        ...s,
+                        ...changes
+                    }
+                })
+            }
+        }));
+    }
+
+    const deleteSetForExercise = (exerciseId, setIndex) => {
+        setExercises(es => es.map(e => {
+            if(e.id !== Number(exerciseId)) return e;
+            return {
+                ...e,
+                sets: e.sets.filter((s, si) => si !== Number(setIndex))
+            }
+        }));
     }
 
     
     return (
         <GlobalContext.Provider value={{
             routines, createRoutine, editRoutine, deleteRoutine,
-            exercises, createExercise, editExercise, deleteExercise
+            exercises, createExercise, editExercise, deleteExercise,
+            createSetForExercise, editSetForExercise, deleteSetForExercise
         }}>
             {children}
         </GlobalContext.Provider>

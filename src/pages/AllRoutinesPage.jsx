@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useGlobal } from "../context/GlobalContext";
+import MainHeader from "../components/MainHeader";
 
 export default function () {
 
@@ -19,6 +20,7 @@ export default function () {
 
     return (
         <>
+            <MainHeader/>
             <h1>Lista Routine</h1>
             <div className="buttons">
                 <button onClick={createNewRoutine}>Aggiungi Routine</button>
