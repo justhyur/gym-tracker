@@ -20,7 +20,7 @@ export default function () {
         deleteRoutine(routine.id);
     }
 
-    const [editRoutineMode, setRoutineEditMode] = useState(true);
+    const [isEditMode, setIsEditMode] = useState(true);
 
     function addExerciseToRoutine(exerciseId){
         editRoutine(routine.id, { exerciseIds: [...routine.exerciseIds, exerciseId] });
@@ -41,8 +41,8 @@ export default function () {
             <header>
                 <Link to="/routines">← Torna alle Routine</Link>
                 <div className="buttons">
-                    <button onClick={() => setRoutineEditMode(c => !c)}>
-                        {editRoutineMode ? "Esci da Modifica" : "Modifica"}
+                    <button onClick={() => setIsEditMode(c => !c)}>
+                        {isEditMode ? "Esci da Modifica" : "Modifica"}
                     </button>
                     <button onClick={askDeleteConfirmation}>Elimina</button>
                 </div>
@@ -53,7 +53,7 @@ export default function () {
                     onChange={newTitle => editRoutine(routine.id, { title: newTitle })}
                 />
             </h1>
-            {exercises.length !== 0 && 
+            {isEditMode && exercises.length !== 0 && 
                 <select value="" onChange={e => addExerciseToRoutine(Number(e.target.value))}>
                     <option value="" disabled style={{display: 'none'}}>Aggiungi Esercizio</option>
                     {exercises.map(ex => (
@@ -61,12 +61,14 @@ export default function () {
                     ))}
                 </select>
             }
-            <div className="buttons">
-                <button onClick={createNewExercise}>Crea Nuovo Esercizio</button>
-            </div>
+            {isEditMode && 
+                <div className="buttons">
+                    <button onClick={createNewExercise}>Crea Nuovo Esercizio</button>
+                </div>
+            }
             <ExerciseList 
                 routine={routine} 
-                isEditMode={editRoutineMode}
+                isEditMode={isEditMode}
             />
         </>
     )

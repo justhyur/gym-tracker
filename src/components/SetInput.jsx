@@ -1,4 +1,7 @@
 import { useGlobal } from "../context/GlobalContext";
+import { useEffect, useState } from "react";
+import dayjs from "dayjs";
+import TimePicker from "./TimePicker";
 
 export default function ({exercise, set, setIndex}) {
 
@@ -40,12 +43,11 @@ export default function ({exercise, set, setIndex}) {
                 />
             }
             {exercise.type === 'time' &&
-                <input
+                <TimePicker
                     className="set-timeValue"
-                    type="number"
-                    placeholder="Tempo"
+                    placeholder="mm:ss"
                     value={set.timeValue || ''}
-                    onChange={e => editSetProperty('timeValue', e.target.value ? Number(e.target.value) : null)}
+                    onChange={value => editSetProperty('timeValue', value || null)}
                 />
             }
             <button onClick={() => deleteSetForExercise(exercise.id, setIndex)}>X</button>
