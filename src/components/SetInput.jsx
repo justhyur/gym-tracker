@@ -11,6 +11,8 @@ export default function ({exercise, set, setIndex}) {
         editSetForExercise(exercise.id, setIndex, { [property]: value });
     }
 
+    const previousSets = exercise.sets.slice(0, setIndex);
+
     return (
         <div className="set">
             <select 
@@ -18,7 +20,7 @@ export default function ({exercise, set, setIndex}) {
                 value={set.type}
                 onChange={(e) => editSetProperty('type', e.target.value)}
             >
-                <option value="n">{Number(setIndex) + 1}</option>
+                <option value="n">{previousSets.filter(s => s.type === 'n' || s.type === 'f').length + 1}</option>
                 <option value="w">W</option>
                 <option value="f">F</option>
                 <option value="d">D</option>

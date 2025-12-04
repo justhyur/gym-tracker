@@ -20,7 +20,7 @@ export default function () {
         deleteRoutine(routine.id);
     }
 
-    const [isEditMode, setIsEditMode] = useState(true);
+    const [isEditMode, setIsEditMode] = useState(false);
 
     function addExerciseToRoutine(exerciseId){
         editRoutine(routine.id, { exerciseIds: [...routine.exerciseIds, exerciseId] });
