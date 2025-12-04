@@ -135,12 +135,40 @@ export function GlobalContextProvider({children}){
         }));
     }
 
+    // -- Logiche per gestire le mie Sessioni --
+    const [sessions, setSessions] = useState(() => {
+        const localSessionsString = localStorage.getItem('sessions');
+        if(localSessionsString){
+            const localSession = JSON.parse(localSessionsString);
+            return localSession;
+        }else{
+            return [];
+        }
+    });
+    useEffect(()=> {
+        const localSessionsString = JSON.stringify(sessions);
+        localStorage.setItem('sessions', localSessionsString);
+    }, [sessions]);
+
+    function importData(data){
+        if(data.routines){
+            setRoutines(data.routines);
+        }
+        if(data.exercises){
+            setExercises(data.exercises);
+        }
+        if(data.sessions){
+            setSessions(data.sessions);
+        }
+    }
     
     return (
         <GlobalContext.Provider value={{
             routines, createRoutine, editRoutine, deleteRoutine,
             exercises, createExercise, editExercise, deleteExercise,
-            createSetForExercise, editSetForExercise, deleteSetForExercise
+            createSetForExercise, editSetForExercise, deleteSetForExercise,
+            sessions,
+            importData
         }}>
             {children}
         </GlobalContext.Provider>

@@ -2,6 +2,7 @@ import { Link, Navigate, Route, Routes } from "react-router-dom"
 import AllRoutinesPage from "./pages/AllRoutinesPage"
 import SingleRoutinePage from "./pages/SingleRoutinePage"
 import AllExercisesPage from "./pages/AllExercisesPage"
+import SettingsPage from "./pages/SettingsPage"
 
 function App() {
 
@@ -12,6 +13,7 @@ function App() {
         <Route path='/routines' element={<AllRoutinesPage/>} />
         <Route path='/exercises' element={<AllExercisesPage/>} />
         <Route path='/routine/:id' element={<SingleRoutinePage/>} />
+        <Route path='/settings' element={<SettingsPage/>} />
       </Routes>
     </div>
   )

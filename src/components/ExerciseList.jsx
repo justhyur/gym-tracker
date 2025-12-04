@@ -55,16 +55,18 @@ export default function ({routine, isEditMode}) {
     return (
         <div className="exercise-list">
             {routineExercises.map((ex, i) => {
-
-                const repsValues = ex.sets.map(s => s.repsValue).filter(v => v !== null);
-                const minRep = Math.min(...repsValues);
-                const maxRep = Math.max(...repsValues);
-                const timeValues = ex.sets.map(s => s.timeValue).filter(v => v !== null);
-                const minTime = Math.min(...timeValues);
-                const maxTime = Math.max(...timeValues);
+                
                 const unitValues = ex.sets.map(s => s.unitValue).filter(v => v !== null);
                 const minUnit = Math.min(...unitValues);
                 const maxUnit = Math.max(...unitValues);
+                
+                const repsValues = ex.sets.map(s => s.repsValue).filter(v => v !== null);
+                const minRep = Math.min(...repsValues);
+                const maxRep = Math.max(...repsValues);
+
+                const timeValues = ex.sets.map(s => s.timeValue).filter(v => v !== null);
+                const minTime = Math.min(...timeValues);
+                const maxTime = Math.max(...timeValues);
                 
                 return (
                     <div key={i} className="exercise-card">
@@ -113,7 +115,7 @@ export default function ({routine, isEditMode}) {
                                 }
                                 {ex.type === 'time' && timeValues.length > 0 &&
                                     <div className="exercise-label">
-                                        {minTime === maxTime ? formatSecondsToMMSS(minTime, true) : `${minTime} - ${maxTime}`}
+                                        {minTime === maxTime ? formatSecondsToMMSS(minTime, true) : `${formatSecondsToMMSS(minTime, true)} - ${formatSecondsToMMSS(maxTime, true)}`}
                                     </div>
                                 }
                                 {ex.restTime !== null &&

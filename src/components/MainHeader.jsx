@@ -7,6 +7,7 @@ export default function () {
     return (
         <header>
             <Link to={pathname === '/routines' ? '/exercises' : '/routines'}>{pathname === '/routines' ? 'Vai a Esercizi' : 'Vai a Routines'}</Link>
+            <Link to="/settings">Impostazioni</Link>
         </header>
     )
 }
