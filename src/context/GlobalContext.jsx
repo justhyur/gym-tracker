@@ -163,9 +163,15 @@ export function GlobalContextProvider({children}){
                 const exercise = exercises.find(ex => ex.id === Number(exerciseId));
                 return {
                     exerciseId,
-                    sets: exercise.sets.map( set => {
+                    sets: exercise.sets.map( ({type, unitValue, repsValue, timeValue}) => {
                         return {
-                            ...set,
+                            type,
+                            defaultUnitValue: unitValue,
+                            defaultRepsValue: repsValue,
+                            defaultTimeValue: timeValue,
+                            unitValue,
+                            repsValue,
+                            timeValue,
                             isCompleted: false,
                             endTime: null,
                             restEndTime: null
@@ -176,6 +182,81 @@ export function GlobalContextProvider({children}){
         };
         setSessions(ss => [...ss, newSession]);
         return newSession;
+    }
+
+    const endSession = (sessionId) => {
+        setSessions(ss => ss.map(s => {
+            if(s.id !== Number(sessionId)) return s;
+            return {
+                ...s,
+                endTime: new Date()
+            }
+        }
+        ));
+    }
+
+    const createSetForSessionExercise = (sessionId, exerciseId) => {
+        setSessions(ss => ss.map(session => {
+            if(session.id !== Number(sessionId)) return session;
+            return {
+                ...session,
+                exercises: session.exercises.map(e => {
+                    if(e.exerciseId !== Number(exerciseId)) return e;
+                    const lastSet = e.sets[e.sets.length - 1];
+                    const newSet = lastSet ? {
+                        ...lastSet,
+                        defaultUnitValue: lastSet.unitValue,
+                        defaultRepsValue: lastSet.repsValue,
+                        defaultTimeValue: lastSet.timeValue
+                    } : defaultSet;
+                    return {
+                        ...e,
+                        sets: [
+                            ...e.sets,
+                            newSet
+                        ]
+                    }
+                })
+            }
+        }));
+    }
+
+    const editSetForSessionExercise = (sessionId, exerciseId, setIndex, changes) => {
+        setSessions(ss => ss.map(session => {
+            if(session.id !== Number(sessionId)) return session;
+            return {
+                ...session,
+                exercises: session.exercises.map(e => {
+                    if(e.exerciseId !== Number(exerciseId)) return e;
+                    return {
+                        ...e,
+                        sets: e.sets.map((s, si) => {
+                            if(si !== Number(setIndex)) return s;
+                            return {
+                                ...s,
+                                ...changes
+                            }
+                        })
+                    }
+                })
+            }
+        }));
+    }
+
+    const deleteSetForSessionExercise = (sessionId, exerciseId, setIndex) => {
+        setSessions(ss => ss.map(session => {
+            if(session.id !== Number(sessionId)) return session;
+            return {
+                ...session,
+                exercises: session.exercises.map(e => {
+                    if(e.exerciseId !== Number(exerciseId)) return e;
+                    return {
+                        ...e,
+                        sets: e.sets.filter((s, si) => si !== Number(setIndex))
+                    }
+                })
+            }
+        }));
     }
 
     function importData(data){
@@ -192,9 +273,6 @@ export function GlobalContextProvider({children}){
 
     const activeSession = sessions.find(s => s.endTime === null);
 
-    console.log('routines', routines);
-    console.log('exercises', exercises);
-    console.log('sessions', sessions);
     console.log('activeSession', activeSession);
     
     return (
@@ -203,7 +281,8 @@ export function GlobalContextProvider({children}){
             exercises, createExercise, editExercise, deleteExercise,
             createSetForExercise, editSetForExercise, deleteSetForExercise,
             activeSession,
-            sessions, createSession,
+            sessions, createSession, endSession,
+            editSetForSessionExercise, createSetForSessionExercise, deleteSetForSessionExercise,
             importData
         }}>
             {children}

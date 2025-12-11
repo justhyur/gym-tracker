@@ -25,8 +25,6 @@ export default function ({
 }) {
     const globalContext = useGlobal();
 
-    console.log('exercises', exercises)
-
     if(!routines){
         routines = globalContext.routines;
     }
@@ -35,9 +33,11 @@ export default function ({
         exercises = globalContext.exercises;
     }
 
-    const routineExercises = useMemo(() => {
+    const exerciseList = useMemo(() => {
         return routine ? routine.exerciseIds.map(exId => exercises.find(ex => ex.id === exId)).filter(ex => ex !== undefined) : exercises
     }, [routine, exercises]);
+
+    const activeExercise = exerciseList.find(ex => ex.sets.find(s => s.endTime === null));
 
     function removeExerciseFromRoutine(index){
         const isConfirmed = window.confirm("Sei sicuro di voler rimuovere questo esercizio dalla routine?");
@@ -70,7 +70,7 @@ export default function ({
 
     return (
         <div className="exercise-list">
-            {routineExercises.map((ex, i) => {
+            {exerciseList.map((ex, i) => {
                 
                 const unitValues = ex.sets.map(s => s.unitValue).filter(v => v !== null);
                 const minUnit = Math.min(...unitValues);
@@ -83,6 +83,8 @@ export default function ({
                 const timeValues = ex.sets.map(s => s.timeValue).filter(v => v !== null);
                 const minTime = Math.min(...timeValues);
                 const maxTime = Math.max(...timeValues);
+
+                const activeSet = i === exerciseList.indexOf(activeExercise) && ex.sets.find(s => s.endTime === null);
                 
                 return (
                     <div key={i} className="exercise-card">
@@ -105,7 +107,7 @@ export default function ({
                                             {i !== 0 &&
                                                 <button onClick={() => moveExerciseInRoutine(i, -1)}>↑</button>
                                             }
-                                            {i !== routineExercises.length -1 &&
+                                            {i !== exerciseList.length -1 &&
                                                 <button  onClick={() => moveExerciseInRoutine(i, 1)}>↓</button>
                                             }
                                         </div>
@@ -226,11 +228,14 @@ export default function ({
                                             setIndex={index}
                                             onSetChange={onSetChange}
                                             onSetDelete={onSetDelete}
+                                            isActive={activeSet && ex.sets.indexOf(activeSet) === index}
                                         />
                                     ))}
-                                    <div className="sets-footer">
-                                        <button onClick={() => onSetCreation(ex.id)}>+ Aggiungi Set</button>
-                                    </div>
+                                    {onSetCreation &&
+                                        <div className="sets-footer">
+                                            <button onClick={() => onSetCreation(ex.id)}>+ Aggiungi Set</button>
+                                        </div>
+                                    }
                                 </div>
                             </div>
                         </>}

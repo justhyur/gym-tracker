@@ -21,6 +21,8 @@ export default function () {
         return <Navigate to="/routines"/>
     }
 
+    console.log('exercises', exercises);
+
     const askDeleteConfirmation = () => {
         const confirmDelete = window.confirm(`Sei sicuro di voler eliminare la routine "${routine.title}"?`);
         if(!confirmDelete) return;
