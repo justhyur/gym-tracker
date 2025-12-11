@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useGlobal } from "../context/GlobalContext";
 import MainHeader from "../components/MainHeader";
+import ActiveSessionPopup from "../components/ActiveSessionPopup";
 
 export default function () {
 
@@ -35,6 +36,7 @@ export default function () {
                     </div>
                 ))}
             </div>
+            <ActiveSessionPopup/>
         </>
     )
 }

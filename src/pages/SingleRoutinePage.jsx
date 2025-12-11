@@ -1,13 +1,20 @@
-import { Link, Navigate, useParams } from "react-router-dom"
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom"
 import { useGlobal } from "../context/GlobalContext";
 import { useState } from "react";
 import InputTitle from "../components/InputTitle";
 import ExerciseList from "../components/ExerciseList";
+import ActiveSessionPopup from "../components/ActiveSessionPopup";
 
 export default function () {
 
-    const { id } = useParams();
-    const { routines, deleteRoutine, editRoutine, exercises, createExercise } = useGlobal();
+    const navigate = useNavigate();
+    const { id } = useParams(); 
+    const { 
+        routines, deleteRoutine, editRoutine, 
+        exercises, createExercise, editExercise, deleteExercise, 
+        createSetForExercise, editSetForExercise, deleteSetForExercise,
+        createSession, activeSession 
+    } = useGlobal();
     const routine = routines.find(routine => routine.id === Number(id));
 
     if(!routine){
@@ -36,6 +43,11 @@ export default function () {
         addExerciseToRoutine(newExercise.id);
     }
 
+    function startNewSession(){
+        const newSession = createSession(routine.id);
+        navigate(`/sessions/${newSession.id}`);
+    }
+
     return (
         <>
             <header>
@@ -61,15 +73,25 @@ export default function () {
                     ))}
                 </select>
             }
-            {isEditMode && 
-                <div className="buttons">
+            <div className="buttons">
+                {isEditMode && 
                     <button onClick={createNewExercise}>Crea Nuovo Esercizio</button>
-                </div>
-            }
+                }
+                {!activeSession && !isEditMode && routine.exerciseIds.length > 0 &&
+                    <button onClick={startNewSession}>Avvia Sessione</button>
+                }
+            </div>
             <ExerciseList 
                 routine={routine} 
                 isEditMode={isEditMode}
+                onExerciseChange={editExercise}
+                onExerciseDelete={deleteExercise}
+                onRoutineChange={editRoutine}
+                onSetCreation={createSetForExercise}
+                onSetChange={editSetForExercise}
+                onSetDelete={deleteSetForExercise}
             />
+            <ActiveSessionPopup/>
         </>
     )
 }

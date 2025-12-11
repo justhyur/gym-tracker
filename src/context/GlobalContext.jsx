@@ -150,6 +150,34 @@ export function GlobalContextProvider({children}){
         localStorage.setItem('sessions', localSessionsString);
     }, [sessions]);
 
+    const createSession = (routineId) => {
+        const routine = routines.find(r => r.id === Number(routineId))
+        const ids = sessions.map(r => r.id);
+        const lastId = Math.max(-1, ...ids);
+        const newSession = {
+            id: lastId + 1,
+            routineId,
+            startTime: new Date(),
+            endTime: null,
+            exercises: routine.exerciseIds.map(exerciseId => {
+                const exercise = exercises.find(ex => ex.id === Number(exerciseId));
+                return {
+                    exerciseId,
+                    sets: exercise.sets.map( set => {
+                        return {
+                            ...set,
+                            isCompleted: false,
+                            endTime: null,
+                            restEndTime: null
+                        }
+                    })
+                }
+            })
+        };
+        setSessions(ss => [...ss, newSession]);
+        return newSession;
+    }
+
     function importData(data){
         if(data.routines){
             setRoutines(data.routines);
@@ -161,13 +189,21 @@ export function GlobalContextProvider({children}){
             setSessions(data.sessions);
         }
     }
+
+    const activeSession = sessions.find(s => s.endTime === null);
+
+    console.log('routines', routines);
+    console.log('exercises', exercises);
+    console.log('sessions', sessions);
+    console.log('activeSession', activeSession);
     
     return (
         <GlobalContext.Provider value={{
             routines, createRoutine, editRoutine, deleteRoutine,
             exercises, createExercise, editExercise, deleteExercise,
             createSetForExercise, editSetForExercise, deleteSetForExercise,
-            sessions,
+            activeSession,
+            sessions, createSession,
             importData
         }}>
             {children}

@@ -3,12 +3,10 @@ import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import TimePicker from "./TimePicker";
 
-export default function ({exercise, set, setIndex}) {
-
-    const { editSetForExercise, deleteSetForExercise } = useGlobal();
+export default function ({exercise, set, setIndex, onSetChange, onSetDelete}) {
 
     function editSetProperty(property, value){
-        editSetForExercise(exercise.id, setIndex, { [property]: value });
+        onSetChange(exercise.id, setIndex, { [property]: value });
     }
 
     const previousSets = exercise.sets.slice(0, setIndex);
@@ -52,7 +50,7 @@ export default function ({exercise, set, setIndex}) {
                     onChange={value => editSetProperty('timeValue', value || null)}
                 />
             }
-            <button onClick={() => deleteSetForExercise(exercise.id, setIndex)}>X</button>
+            <button onClick={() => onSetDelete(exercise.id, setIndex)}>X</button>
         </div>
     );
 }
