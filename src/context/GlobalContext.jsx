@@ -185,11 +185,23 @@ export function GlobalContextProvider({children}){
     }
 
     const endSession = (sessionId) => {
+        const endSessionTime = new Date();
         setSessions(ss => ss.map(s => {
             if(s.id !== Number(sessionId)) return s;
             return {
                 ...s,
-                endTime: new Date()
+                exercises: s.exercises.map(ex => {
+                    return {
+                        ...ex,
+                        sets: ex.sets.map(set => {
+                            return {
+                                ...set,
+                                endTime: set.endTime === null ? endSessionTime : set.endTime
+                            }
+                        })
+                    }
+                }),
+                endTime: endSessionTime
             }
         }
         ));

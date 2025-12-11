@@ -48,7 +48,7 @@ export default function ({
                             onChange={e => editSetProperty('unitValue', e.target.value ? Number(e.target.value) : null)}
                         />
                         :
-                        `${set.unitValue || set.defaultUnitValue || 'Nessun'} ${exercise.unitType}`
+                        `${set.isCompleted ? (set.unitValue || set.defaultUnitValue || 'Nessun') : 'Nessun'} ${exercise.unitType}`
                     }
                 </>}
             </div>
@@ -62,7 +62,7 @@ export default function ({
                         onChange={e => editSetProperty('repsValue', e.target.value ? Number(e.target.value) : null)}
                     />
                     :
-                    `${set.repsValue || set.defaultRepsValue || 'Nessuna'} reps`
+                    `${set.isCompleted ? (set.repsValue || set.defaultRepsValue || 'Nessuna') : 'Nessuna'} serie`
                 }
             </>}
             {exercise.type === 'time' && <>
@@ -74,13 +74,13 @@ export default function ({
                         onChange={value => editSetProperty('timeValue', value || null)}
                     />
                     :
-                    `${ (set.timeValue !== null || set.defaultTimeValue !== null) ? formatSecondsToMMSS(set.timeValue !== null ? set.timeValue : set.defaultTimeValue) : 'Nessun valore'}`
+                    `${set.isCompleted ? (formatSecondsToMMSS(set.timeValue) || formatSecondsToMMSS(set.defaultTimeValue) || 'Nessun valore') : 'Nessun valore'}`
                 }
             </>}
             {set.endTime && 
-                <span onClick={() => editSetProperty('isCompleted', !set.isCompleted)}>{set.isCompleted ? '✅' : '⤵️'}</span>
+                <span onClick={() => onSetChange && editSetProperty('isCompleted', !set.isCompleted)}>{set.isCompleted ? '✅' : '⤵️'}</span>
             }
-            {isActive && <>
+            {isActive && onSetChange && <>
                 <button onClick={() => endSet(true)}>Completa</button>
                 <button onClick={() => endSet(false)}>Salta</button>
             </>}
