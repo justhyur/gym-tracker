@@ -2,7 +2,7 @@ import { useGlobal } from "../context/GlobalContext";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import TimePicker from "./TimePicker";
-import { formatSecondsToMMSS } from "../lib/utils";
+import { formatSecondsToMMSS, getRestTimer } from "../lib/utils";
 
 export default function ({
     exercise, set, isActive, setIndex, 
@@ -18,9 +18,16 @@ export default function ({
     const endSet = (isCompleted) => {
         onSetChange(exercise.id, setIndex, {
             endTime: new Date(),
+            restEndTime: !isCompleted ? new Date() : set.restEndTime,
             isCompleted,
         });
     }
+
+    const handleEndTimer = () => {
+        onSetChange(exercise.id, setIndex, { restEndTime: new Date() });
+    }
+
+    const restTimer = getRestTimer(set, exercise.restTime);
 
     return (
         <div className="set">
@@ -81,8 +88,14 @@ export default function ({
                 <span onClick={() => onSetChange && editSetProperty('isCompleted', !set.isCompleted)}>{set.isCompleted ? '✅' : '⤵️'}</span>
             }
             {isActive && onSetChange && <>
-                <button onClick={() => endSet(true)}>Completa</button>
-                <button onClick={() => endSet(false)}>Salta</button>
+                {set.endTime === null && <>
+                    <button onClick={() => endSet(true)}>Completa</button>
+                    <button onClick={() => endSet(false)}>Salta</button>
+                </>}
+                {set.endTime && exercise.restTime !== null && <>
+                    <span className={`rest-timer ${restTimer.startsWith('-') ? 'danger' : ''}`}>{restTimer}</span>
+                    <button onClick={handleEndTimer}>Continua</button>
+                </>}
             </>}
             {onSetDelete &&
                 <button style={{marginLeft: 'auto'}} onClick={() => onSetDelete(exercise.id, setIndex)}>X</button>

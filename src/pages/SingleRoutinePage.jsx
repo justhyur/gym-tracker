@@ -4,6 +4,8 @@ import { useState } from "react";
 import InputTitle from "../components/InputTitle";
 import ExerciseList from "../components/ExerciseList";
 import ActiveSessionPopup from "../components/ActiveSessionPopup";
+import dayjs from "dayjs";
+import { formatSecondsToMMSS, getSessionTitle } from "../lib/utils";
 
 export default function () {
 
@@ -13,7 +15,7 @@ export default function () {
         routines, deleteRoutine, editRoutine, 
         exercises, createExercise, editExercise, deleteExercise, 
         createSetForExercise, editSetForExercise, deleteSetForExercise,
-        createSession, activeSession 
+        sessions, createSession, deleteSession, activeSession 
     } = useGlobal();
     const routine = routines.find(routine => routine.id === Number(id));
 
@@ -21,7 +23,9 @@ export default function () {
         return <Navigate to="/routines"/>
     }
 
-    console.log('exercises', exercises);
+    const routineSessions = sessions.filter(s => s.routineId === routine.id && s.endTime).sort((a, b) => 
+        dayjs(b.startTime).valueOf() - dayjs(a.startTime).valueOf())
+    ;
 
     const askDeleteConfirmation = () => {
         const confirmDelete = window.confirm(`Sei sicuro di voler eliminare la routine "${routine.title}"?`);
@@ -49,6 +53,8 @@ export default function () {
         const newSession = createSession(routine.id);
         navigate(`/sessions/${newSession.id}`);
     }
+
+    const [showRoutineSessions, setShowRoutineSessions] = useState(false);
 
     return (
         <>
@@ -82,7 +88,22 @@ export default function () {
                 {!activeSession && !isEditMode && routine.exerciseIds.length > 0 &&
                     <button onClick={startNewSession}>Avvia Sessione</button>
                 }
+                {!isEditMode && routineSessions.length > 0 &&
+                    <button onClick={() => setShowRoutineSessions(c => !c)}>{showRoutineSessions ? 'Nascondi' : 'Mostra'} Sessioni</button>
+                }
             </div>
+            {!isEditMode && showRoutineSessions &&
+                <div className="routine-sessions">
+                    {routineSessions.map(session => (
+                        <div key={session.id} className="routine-session">
+                            <Link to={`/sessions/${session.id}`}>
+                                {getSessionTitle(session)}
+                            </Link>
+                            <button onClick={() => deleteSession(session.id)}>X</button>
+                        </div>
+                    ))}
+                </div>
+            }
             <ExerciseList 
                 routine={routine} 
                 isEditMode={isEditMode}

@@ -188,7 +188,7 @@ export function GlobalContextProvider({children}){
         const endSessionTime = new Date();
         setSessions(ss => ss.map(s => {
             if(s.id !== Number(sessionId)) return s;
-            return {
+            const endedSession = {
                 ...s,
                 exercises: s.exercises.map(ex => {
                     return {
@@ -203,8 +203,22 @@ export function GlobalContextProvider({children}){
                 }),
                 endTime: endSessionTime
             }
+            endedSession.exercises.forEach(ex => {
+                const updatedSets = ex.sets.map(s => ({
+                    type: s.type, 
+                    repsValue: s.repsValue !== null ? s.repsValue : s.defaultRepsValue, 
+                    unitValue: s.unitValue !== null ? s.unitValue : s.defaultUnitValue, 
+                    timeValue: s.timeValue !== null ? s.timeValue : s.defaultTimeValue
+                }));
+                editExercise(ex.exerciseId, {sets: updatedSets});
+            })
+            return endedSession;
         }
         ));
+    }
+
+    const deleteSession = id => {
+        setSessions(ss => ss.filter(s => s.id !== Number(id)));
     }
 
     const createSetForSessionExercise = (sessionId, exerciseId) => {
@@ -285,7 +299,9 @@ export function GlobalContextProvider({children}){
 
     const activeSession = sessions.find(s => s.endTime === null);
 
-    console.log('activeSession', activeSession);
+    console.log('sessions', sessions);
+    console.log('routines', routines);
+    console.log('exercises', exercises);
     
     return (
         <GlobalContext.Provider value={{
@@ -293,7 +309,7 @@ export function GlobalContextProvider({children}){
             exercises, createExercise, editExercise, deleteExercise,
             createSetForExercise, editSetForExercise, deleteSetForExercise,
             activeSession,
-            sessions, createSession, endSession,
+            sessions, createSession, endSession, deleteSession,
             editSetForSessionExercise, createSetForSessionExercise, deleteSetForSessionExercise,
             importData
         }}>

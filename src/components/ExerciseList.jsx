@@ -22,6 +22,7 @@ export default function ({
     onSetChange,
     onSetDelete,
     onRoutineChange,
+    onCompletion,
 }) {
     const globalContext = useGlobal();
 
@@ -37,7 +38,10 @@ export default function ({
         return routine ? routine.exerciseIds.map(exId => exercises.find(ex => ex.id === exId)).filter(ex => ex !== undefined) : exercises
     }, [routine, exercises]);
 
-    const activeExercise = exerciseList.find(ex => ex.sets.find(s => s.endTime === null));
+    const activeExercise = exerciseList.find(ex => ex.sets.find(s => ex.restTime === null ? s.endTime === null : s.restEndTime === null));
+    if(activeExercise === undefined && onCompletion){
+        onCompletion();
+    }
 
     function removeExerciseFromRoutine(index){
         const isConfirmed = window.confirm("Sei sicuro di voler rimuovere questo esercizio dalla routine?");
@@ -84,7 +88,9 @@ export default function ({
                 const minTime = Math.min(...timeValues);
                 const maxTime = Math.max(...timeValues);
 
-                const activeSet = i === exerciseList.indexOf(activeExercise) && ex.sets.find(s => s.endTime === null);
+                const activeSet = i === exerciseList.indexOf(activeExercise) && ex.sets.find(s => (
+                    ex.restTime === null ? s.endTime === null : s.restEndTime === null
+                ));
                 
                 return (
                     <div key={i} className="exercise-card">

@@ -66,6 +66,7 @@ header{
   display: flex;
   justify-content: center;
   gap: .5rem;
+  margin: .5em 0;
 }
 
 .exercise-list{
@@ -197,4 +198,28 @@ header{
   padding: .5rem 1rem;
   border-radius: .5rem;
   border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.routine-sessions{
+  margin-top: .5rem;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  padding: 0 10%;
+}
+
+.routine-session{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rest-timer{
+  font-weight: 600;
+  color: green;
+  font-size: 1.2em;
+}
+
+.rest-timer.danger{
+  color: red;
 }
