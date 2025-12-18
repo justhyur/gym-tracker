@@ -41,10 +41,31 @@ export default function () {
     },[session?.endTime]);
 
     return (<>
-        <header>
+        <header style={{
+            background: 'rgba(0, 0, 0, 0.2)',
+            padding: '1.25rem',
+            borderRadius: '12px'
+        }}>
             <Link to={`/routine/${routine.id}`}>← Torna alla Routine</Link>
         </header>
-        <h1><span style={{fontSize: '.75em'}}>{routine.title}</span> | {sessionTitle}</h1>
+        <div style={{
+            background: 'linear-gradient(135deg, rgba(74, 144, 226, 0.1), rgba(108, 92, 231, 0.1))',
+            padding: '1.5rem',
+            borderRadius: '12px',
+            border: '1px solid var(--card-border)',
+            marginTop: '1rem',
+            marginBottom: '1rem'
+        }}>
+            <div style={{fontSize: '0.9rem', opacity: 0.7, marginBottom: '0.5rem'}}>📋 Routine</div>
+            <h2 style={{margin: '0 0 1rem 0', padding: 0}}>{routine.title}</h2>
+            <div style={{fontSize: '0.9rem', opacity: 0.7, marginBottom: '0.5rem'}}>⏱️ Durata Sessione</div>
+            <div style={{
+                fontSize: '1.5rem',
+                fontWeight: '700',
+                color: 'var(--success-color)',
+                textShadow: '0 2px 8px rgba(0, 184, 148, 0.3)'
+            }}>{sessionTitle}</div>
+        </div>
         <ExerciseList
             routine={routine}
             isEditMode={true}
@@ -65,9 +86,24 @@ export default function () {
             }}
         />
         {session.endTime === null &&
-            <div className="buttons">
-                <button onClick={() => endSession(session.id)}>Termina Sessione</button>
-                <button onClick={handleDiscard}>Scarta Sessione</button>
+            <div className="buttons" style={{
+                position: 'sticky',
+                bottom: '1rem',
+                background: 'rgba(26, 26, 46, 0.95)',
+                padding: '1rem',
+                borderRadius: '12px',
+                backdropFilter: 'blur(10px)',
+                boxShadow: 'var(--shadow-lg)',
+                marginTop: '2rem'
+            }}>
+                <button onClick={() => endSession(session.id)} style={{
+                    background: 'linear-gradient(135deg, var(--success-color), #00a077)',
+                    fontSize: '1.1rem',
+                    padding: '0.875rem 1.5rem'
+                }}>✅ Termina Sessione</button>
+                <button onClick={handleDiscard} style={{
+                    background: 'var(--danger-color)'
+                }}>❌ Scarta Sessione</button>
             </div>
         }
     </>)

@@ -8,7 +8,7 @@ export default function(){
 
     return (<>
         <MainHeader/>
-        <h1>Lista Esercizi</h1>
+        <h1>💪 Lista Esercizi</h1>
         <ExerciseList 
             isEditMode={true}
             onExerciseChange={editExercise}

@@ -7,7 +7,9 @@ export default function (){
 
     return !activeSession ? null : (
         <div className="session-popup">
-            <Link to={`/sessions/${activeSession.id}`}>Torna alla sessione attiva</Link>
+            <Link to={`/sessions/${activeSession.id}`}>
+                🏋️ Torna alla sessione attiva
+            </Link>
         </div>
     )
 }

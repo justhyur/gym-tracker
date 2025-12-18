@@ -58,13 +58,21 @@ export default function () {
 
     return (
         <>
-            <header>
+            <header style={{
+                background: 'rgba(0, 0, 0, 0.2)',
+                padding: '1.25rem',
+                borderRadius: '12px'
+            }}>
                 <Link to="/routines">← Torna alle Routine</Link>
-                <div className="buttons">
-                    <button onClick={() => setIsEditMode(c => !c)}>
-                        {isEditMode ? "Esci da Modifica" : "Modifica"}
+                <div className="buttons" style={{margin: 0}}>
+                    <button onClick={() => setIsEditMode(c => !c)} style={{
+                        background: isEditMode ? 'var(--warning-color)' : 'var(--primary-color)'
+                    }}>
+                        {isEditMode ? "✓ Esci da Modifica" : "✏️ Modifica"}
                     </button>
-                    <button onClick={askDeleteConfirmation}>Elimina</button>
+                    <button onClick={askDeleteConfirmation} style={{
+                        background: 'var(--danger-color)'
+                    }}>🗑️ Elimina</button>
                 </div>
             </header>
             <h1>
@@ -74,8 +82,19 @@ export default function () {
                 />
             </h1>
             {isEditMode && exercises.length !== 0 && 
-                <select value="" onChange={e => addExerciseToRoutine(Number(e.target.value))}>
-                    <option value="" disabled style={{display: 'none'}}>Aggiungi Esercizio</option>
+                <select 
+                    value="" 
+                    onChange={e => addExerciseToRoutine(Number(e.target.value))}
+                    style={{
+                        width: '100%',
+                        maxWidth: '400px',
+                        margin: '1rem auto',
+                        display: 'block',
+                        fontSize: '1rem',
+                        padding: '0.75rem 1rem'
+                    }}
+                >
+                    <option value="" disabled style={{display: 'none'}}>➕ Aggiungi Esercizio</option>
                     {exercises.map(ex => (
                         <option key={ex.id} value={ex.id}>{ex.title}</option>
                     ))}
@@ -83,23 +102,32 @@ export default function () {
             }
             <div className="buttons">
                 {isEditMode && 
-                    <button onClick={createNewExercise}>Crea Nuovo Esercizio</button>
+                    <button onClick={createNewExercise} style={{
+                        background: 'var(--success-color)'
+                    }}>➕ Crea Nuovo Esercizio</button>
                 }
                 {!activeSession && !isEditMode && routine.exerciseIds.length > 0 &&
-                    <button onClick={startNewSession}>Avvia Sessione</button>
+                    <button onClick={startNewSession} style={{
+                        background: 'linear-gradient(135deg, var(--success-color), #00a077)',
+                        fontSize: '1.1rem',
+                        padding: '0.875rem 1.5rem'
+                    }}>🚀 Avvia Sessione</button>
                 }
                 {!isEditMode && routineSessions.length > 0 &&
-                    <button onClick={() => setShowRoutineSessions(c => !c)}>{showRoutineSessions ? 'Nascondi' : 'Mostra'} Sessioni</button>
+                    <button onClick={() => setShowRoutineSessions(c => !c)} style={{
+                        background: 'var(--secondary-color)'
+                    }}>{showRoutineSessions ? '👁️ Nascondi' : '📊 Mostra'} Sessioni</button>
                 }
             </div>
             {!isEditMode && showRoutineSessions &&
                 <div className="routine-sessions">
                     {routineSessions.map(session => (
                         <div key={session.id} className="routine-session">
-                            <Link to={`/sessions/${session.id}`}>
+                            <span style={{marginRight: '0.5rem'}}>📅</span>
+                            <Link to={`/sessions/${session.id}`} style={{flex: 1}}>
                                 {getSessionTitle(session)}
                             </Link>
-                            <button onClick={() => deleteSession(session.id)}>X</button>
+                            <button onClick={() => deleteSession(session.id)}>🗑️</button>
                         </div>
                     ))}
                 </div>

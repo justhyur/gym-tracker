@@ -49,9 +49,23 @@ export default function(){
 
     return (<>
         <MainHeader/>
-        <h1>Impostazioni</h1>
-        <div style={{margin: '1rem 0', display: 'flex', justifyContent: 'center'}}>
-            <button onClick={() => inputFileRef.current.click()}>Importa file .gymtracker</button>
+        <h1>⚙️ Impostazioni</h1>
+        <div style={{
+            margin: '2rem 0',
+            display: 'flex',
+            justifyContent: 'center',
+            gap: '1rem',
+            flexWrap: 'wrap'
+        }}>
+            <button 
+                onClick={() => inputFileRef.current.click()}
+                style={{
+                    background: 'var(--secondary-color)',
+                    boxShadow: '0 2px 8px rgba(108, 92, 231, 0.3)'
+                }}
+            >
+                📥 Importa file .gymtracker
+            </button>
             <input 
                 hidden
                 ref={inputFileRef} 
@@ -61,20 +75,74 @@ export default function(){
             />
         </div>
         <form className="export-form" onSubmit={handleExport}>
-            <h3>Esporta i tuoi dati</h3>
-            <label>
-                <input name="routines" type="checkbox" />
-                <span>Routine</span>
+            <h3 style={{marginBottom: '1rem'}}>📤 Esporta i tuoi dati</h3>
+            <label style={{
+                flexDirection: 'row',
+                padding: '0.75rem 1rem',
+                background: 'rgba(255, 255, 255, 0.03)',
+                borderRadius: '8px',
+                width: '100%',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease'
+            }}>
+                <input 
+                    name="routines" 
+                    type="checkbox"
+                    style={{
+                        width: '20px',
+                        height: '20px',
+                        cursor: 'pointer'
+                    }}
+                />
+                <span>📋 Routine</span>
             </label>
-            <label>
-                <input name="exercises" type="checkbox" />
-                <span>Esercizi</span>
+            <label style={{
+                flexDirection: 'row',
+                padding: '0.75rem 1rem',
+                background: 'rgba(255, 255, 255, 0.03)',
+                borderRadius: '8px',
+                width: '100%',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease'
+            }}>
+                <input 
+                    name="exercises" 
+                    type="checkbox"
+                    style={{
+                        width: '20px',
+                        height: '20px',
+                        cursor: 'pointer'
+                    }}
+                />
+                <span>💪 Esercizi</span>
             </label>
-            <label>
-                <input name="sessions" type="checkbox" />
-                <span>Sessioni</span>
+            <label style={{
+                flexDirection: 'row',
+                padding: '0.75rem 1rem',
+                background: 'rgba(255, 255, 255, 0.03)',
+                borderRadius: '8px',
+                width: '100%',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease'
+            }}>
+                <input 
+                    name="sessions" 
+                    type="checkbox"
+                    style={{
+                        width: '20px',
+                        height: '20px',
+                        cursor: 'pointer'
+                    }}
+                />
+                <span>📅 Sessioni</span>
             </label>
-            <button>Esporta</button>
+            <button style={{
+                width: '100%',
+                background: 'var(--success-color)',
+                boxShadow: '0 2px 8px rgba(0, 184, 148, 0.3)'
+            }}>
+                ⬇️ Esporta
+            </button>
         </form>
     </>)
 }
