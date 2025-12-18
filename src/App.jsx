@@ -6,6 +6,7 @@ import SettingsPage from "./pages/SettingsPage"
 import SessionPage from "./pages/SessionPage"
 import { useGlobal } from "./context/GlobalContext"
 import { useEffect } from "react"
+import RoutineStatsPage from "./pages/RoutineStatsPage"
 
 function App() {
 
@@ -37,6 +38,7 @@ function App() {
         <Route path='/routines' element={<AllRoutinesPage/>} />
         <Route path='/exercises' element={<AllExercisesPage/>} />
         <Route path='/routine/:id' element={<SingleRoutinePage/>} />
+        <Route path='/routine/:id/stats' element={<RoutineStatsPage/>} />
         <Route path='/sessions/:id' element={<SessionPage/>} />
         <Route path='/settings' element={<SettingsPage/>} />
       </Routes>

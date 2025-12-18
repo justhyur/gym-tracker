@@ -299,9 +299,9 @@ export function GlobalContextProvider({children}){
 
     const activeSession = sessions.find(s => s.endTime === null);
 
-    console.log('sessions', sessions);
-    console.log('routines', routines);
-    console.log('exercises', exercises);
+    // console.log('sessions', sessions);
+    // console.log('routines', routines);
+    // console.log('exercises', exercises);
     
     return (
         <GlobalContext.Provider value={{

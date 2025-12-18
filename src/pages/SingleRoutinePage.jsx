@@ -118,6 +118,11 @@ export default function () {
                         background: 'var(--secondary-color)'
                     }}>{showRoutineSessions ? '👁️ Nascondi' : '📊 Mostra'} Sessioni</button>
                 }
+                {!isEditMode && routineSessions.length >= 2 &&
+                    <button onClick={() => navigate(`/routine/${routine.id}/stats`)} style={{
+                        background: 'var(--primary-color)'
+                    }}>📈 Visualizza Statistiche</button>
+                }
             </div>
             {!isEditMode && showRoutineSessions &&
                 <div className="routine-sessions">
